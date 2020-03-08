@@ -74,12 +74,40 @@ begin
 
           if (i_start = '1') then
             o_done <= '0';
-            next_state = ADDRESS_MODIFIER;
+            next_state <= ADDRESS_MODIFIER;
 
           end if;
 
-          next_addr = "0000000000001000"            -- address starts with walue 8 ( address to encode )
+          next_addr <= "0000000000001000"            -- address starts with walue 8 ( address to encode )
 
+
+        when ADDRESS_MODIFIER =>
+
+          if (curr_addr = "0000000000000000" ) then
+
+            next_state <= ENCODE_FAIL;
+
+          elsif (pre_state /= IDLE ) then
+
+            next_addr <= ( curr_addr - 1 );
+            next_state <= WAIT_CLK;
+
+          else
+            next_state <= WAIT_CLK;
+
+          end if;
+
+        when WAIT_CLK =>
+
+          if (pre_state = ADDRESS_MODIFIER) then
+
+            next_state <= READ_RAM;
+
+          elsif (pre_state = SAVE_ADDRESS) then
+
+            next_state <= WRITE_OUT;
+
+          end if;
 
         when others =>
 
