@@ -21,6 +21,9 @@
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use ieee.std_logic_unsigned.all;
+use ieee.numeric_std.all;
+use IEEE.std_logic_arith.all;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -89,7 +92,7 @@ begin
 
           elsif (pre_state /= IDLE ) then
 
-            next_addr <= ( curr_addr - 1 );
+            next_addr <= ( curr_addr - "0000000000000001" );
             next_state <= WAIT_CLK;
 
           else
