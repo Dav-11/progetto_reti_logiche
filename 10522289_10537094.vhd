@@ -50,11 +50,12 @@ end project_reti_logiche;
 
 architecture Behavioral of project_reti_logiche is
 
-type state_type is (IDLE,ADDRESS_MODIFIER,WAIT_CLK,READ_RAM,COMPARE,WZ_NUM,ENCODING,ENCODE_FAIL,SAVE_ADDRESS,WRITE_OUT,DONE);
-signal  pre_state,curr_state,next_state : state_type := IDLE;
-signal  curr_input,next_output : std_logic_vector (7 downto 0);
-signal  curr_addr,next_addr : std_logic_vector (15 downto 0);
-signal  curr_wz,next_wz : std_logic_vector (7 downto 0);
+type state_type is (IDLE, ADDRESS_MODIFIER, WAIT_CLK, READ_RAM, COMPARE, WZ_NUM, ENCODING, ENCODE_FAIL, SAVE_ADDRESS, WRITE_OUT, DONE);
+signal  pre_state, curr_state, next_state : state_type := IDLE;
+signal  curr_input, next_output : std_logic_vector (7 downto 0);
+signal  curr_addr : std_logic_vector (15 downto 0);
+signal  next_addr : std_logic_vector (15 downto 0) := "0000000000001000";
+signal  curr_wz, next_wz : std_logic_vector (7 downto 0);
 
 begin
 
@@ -81,13 +82,12 @@ begin
 
           end if;
 
-          next_addr <= "0000000000001000"            -- address starts with walue 8 ( address to encode )
+          next_addr <= "0000000000001000";            -- address starts with walue 8 ( address to encode )
 
-
+    -- ADDR_MOD
         when ADDRESS_MODIFIER =>
 
           if (curr_addr = "0000000000000000" ) then
-
             next_state <= ENCODE_FAIL;
 
           elsif (pre_state /= IDLE ) then
@@ -100,6 +100,7 @@ begin
 
           end if;
 
+    -- WAIT_CLK
         when WAIT_CLK =>
 
           if (pre_state = ADDRESS_MODIFIER) then
@@ -111,8 +112,30 @@ begin
             next_state <= WRITE_OUT;
 
           end if;
+          
+    -- READ_RAM
+         when READ_RAM =>
+         
+    -- COMPARE
+         when COMPARE =>
+        
+     -- WZ_NUM    
+         when WZ_NUM =>
+         
+     -- ENCODING    
+         when ENCODING =>
+         
+     -- SAVE_ADDRESS    
+         when SAVE_ADDRESS =>
+         
+     -- WRITE_OUT  
+         when WRITE_OUT =>
+         
+     -- DONE
+         when DONE =>
 
-        when others =>
+            
+         when others =>
 
       end case;
 
