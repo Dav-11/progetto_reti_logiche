@@ -209,9 +209,12 @@ begin
                                     
                     enc := "111";
                     
-                end case;
+                when others =>
                 
-                next_state <= ENCODING;
+       
+            end case;
+                
+            next_state <= ENCODING;
          
      -- ENCODING    
          when ENCODING =>
