@@ -50,7 +50,7 @@ end project_reti_logiche;
 
 architecture Behavioral of project_reti_logiche is
 
-type state_type is (IDLE, ADDRESS_MODIFIER, WAIT_CLK, READ_RAM, COMPARE, WZ_NUM, ENCODING, ENCODE_FAIL, SAVE_ADDRESS, DONE);
+type state_type is (IDLE, ADDRESS_MODIFIER, WAIT_CLK, READ_RAM, COMPARE, WZ_NUM, ENCODING, ENCODE_FAIL, SAVE_ADDRESS, WAIT_CLK_D, DONE);
 signal  pre_state, curr_state, next_state : state_type := IDLE;
 signal  curr_input, next_output : std_logic_vector (7 downto 0);
 signal  curr_addr : std_logic_vector (15 downto 0);
@@ -123,8 +123,13 @@ begin
             --next_state <= READ_RAM;
             curr_state <= READ_RAM;
             --pre_state <= WAIT_CLK;
+            
+          end if;
 
-          elsif (pre_state = SAVE_ADDRESS) then
+    -- WAIT_CLK_D
+        when WAIT_CLK_D =>
+        
+          if (pre_state = SAVE_ADDRESS) then
 
             --next_state <= DONE;
             curr_state <= DONE;
@@ -262,8 +267,8 @@ begin
             o_address <= "0000000000001001";
             o_data <= next_output;
 
-            --next_state <= WAIT_CLK;
-            curr_state <= WAIT_CLK;
+            --next_state <= WAIT_CLK_D;
+            curr_state <= WAIT_CLK_D;
             --pre_state <= SAVE_ADDRESS;
 
      -- ENCODE FAIL
@@ -275,8 +280,8 @@ begin
             o_address <= "0000000000001001";
             o_data <= curr_input;
 
-            --next_state <= WAIT_CLK;
-            curr_state <= WAIT_CLK;
+            --next_state <= WAIT_CLK_D;
+            curr_state <= WAIT_CLK_D;
             --pre_state <= ENCODE_FAIL;
 
      -- DONE
